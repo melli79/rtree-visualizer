@@ -3,6 +3,10 @@
 
 #include <QWidget>
 #include <cmath>
+#include <boost/config.hpp>
+#include <boost/geometry/core/cs.hpp>
+#include <boost/geometry/geometries/point.hpp>
+#include <boost/geometry/geometries/box.hpp>
 #include <boost/geometry/index/rtree.hpp>
 #include <random>
 
@@ -37,7 +41,7 @@ public:
     typedef  boost::geometry::model::point<double, 2, boost::geometry::cs::cartesian>  Point;
     typedef boost::geometry::model::box<Point>  Box;
     typedef Point  Value;
-    typedef boost::geometry::index::quadratic<16>  RTreeParams;
+    typedef boost::geometry::index::rstar<16>  RTreeParams;
     typedef boost::geometry::index::rtree<Value, RTreeParams>  RTree;
 
     typedef std::mt19937_64  Random;
