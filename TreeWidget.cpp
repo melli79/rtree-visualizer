@@ -1,5 +1,6 @@
 #include "TreeWidget.h"
-#include "QtGui"
+#include <boost/geometry/strategies/strategies.hpp>
+#include <QtGui>
 #include "rtree-traverser.hpp"
 #include <random>
 #include <vector>
@@ -12,11 +13,11 @@ typedef std::uniform_real_distribution<double>  Uniform;
 
 TreeWidget::RTree* generateRandomTree(TreeWidget::Random& random, size_t n) {
     auto u01 = Uniform(0.0, 1.0);
-    std::vector<TreeWidget::Point> ps;
+    auto tree = new TreeWidget::RTree();
     for (size_t i=0; i<n; ++i) {
-        ps.emplace_back(u01(random), u01(random));
+        tree->insert(TreeWidget::Point(u01(random), u01(random)));
     }
-    return new TreeWidget::RTree(ps);
+    return tree;
 }
 
 TreeWidget::TreeWidget(QWidget *parent) :QWidget(parent) {

@@ -35,10 +35,10 @@ public:
     void paintEvent(QPaintEvent*) override;
 
     typedef  boost::geometry::model::point<double, 2, boost::geometry::cs::cartesian>  Point;
-    typedef Point  Value;
     typedef boost::geometry::model::box<Point>  Box;
+    typedef Point  Value;
     typedef boost::geometry::index::quadratic<16>  RTreeParams;
-    typedef boost::geometry::index::rtree<Point, RTreeParams>  RTree;
+    typedef boost::geometry::index::rtree<Value, RTreeParams>  RTree;
 
     typedef std::mt19937_64  Random;
 private:
