@@ -12,13 +12,20 @@ namespace bgi = bg::index;
 typedef std::mt19937_64  Random;
 typedef std::uniform_real_distribution<double>  Uniform;
 
+TreeWidget::Point nextPoint(TreeWidget::Random& random, Uniform& u01) {
+    return {u01(random), u01(random)};
+}
+
 TreeWidget::RTree* generateRandomTree(TreeWidget::Random& random, size_t n) {
     auto u01 = Uniform(0.0, 1.0);
-    std::vector<TreeWidget::Point> ps(n);
+    auto u_11 = Uniform(-0.02, 0.02);
+    std::vector<TreeWidget::Value> ss(n);
     for (size_t i=0; i<n; ++i) {
-        ps[i] = { u01(random), u01(random) };
+        TreeWidget::Point p0 = nextPoint(random, u01);
+        TreeWidget::Point p1 = p0;  bg::add_point(p1, nextPoint(random, u_11));
+        ss[i] = { p0, p1 };
     }
-    return new TreeWidget::RTree(ps);
+    return new TreeWidget::RTree(ss);
 }
 
 TreeWidget::TreeWidget(QWidget *parent) :QWidget(parent) {
@@ -42,8 +49,10 @@ void TreeWidget::paintEvent(QPaintEvent*) {
     scale = computeScale(width(), height(), range);
     auto p = QPainter(this);
     auto br = QBrush(Qt::black);
-    for (Point const& pt : *tree) {
-        p.fillRect(scale.px(pt.get<0>())-1, scale.py(pt.get<1>())-1, 3,3, br);
+    for (Value const& seg : *tree) {
+        Point p0 = seg.first;  Point p1 = seg.second;
+        p.drawLine(scale.px(p0.get<0>()), scale.py(p0.get<1>()),
+            scale.px(p1.get<0>()), scale.py(p1.get<1>()));
     }
     RTreeTraverser<Point, Value, RTreeParams>  traverser;
     traverser.traverse_frames(*tree, [&](Box const& b, unsigned depth) {
