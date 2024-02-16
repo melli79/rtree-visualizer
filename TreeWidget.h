@@ -41,7 +41,7 @@ public:
     typedef  boost::geometry::model::point<double, 2, boost::geometry::cs::cartesian>  Point;
     typedef boost::geometry::model::box<Point>  Box;
     typedef Point  Value;
-    typedef boost::geometry::index::rstar<16>  RTreeParams;
+    typedef boost::geometry::index::linear<16>  RTreeParams;
     typedef boost::geometry::index::rtree<Value, RTreeParams>  RTree;
 
     typedef std::mt19937_64  Random;

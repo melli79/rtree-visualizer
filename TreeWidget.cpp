@@ -14,11 +14,11 @@ typedef std::uniform_real_distribution<double>  Uniform;
 
 TreeWidget::RTree* generateRandomTree(TreeWidget::Random& random, size_t n) {
     auto u01 = Uniform(0.0, 1.0);
-    auto tree = new TreeWidget::RTree();
+    std::vector<TreeWidget::Point> ps(n);
     for (size_t i=0; i<n; ++i) {
-        tree->insert(TreeWidget::Point(u01(random), u01(random)));
+        ps[i] = { u01(random), u01(random) };
     }
-    return tree;
+    return new TreeWidget::RTree(ps);
 }
 
 TreeWidget::TreeWidget(QWidget *parent) :QWidget(parent) {
