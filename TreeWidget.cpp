@@ -48,7 +48,6 @@ Rect computeScale(int width, int height, Rect const& range) {
 void TreeWidget::paintEvent(QPaintEvent*) {
     scale = computeScale(width(), height(), range);
     auto p = QPainter(this);
-    auto br = QBrush(Qt::black);
     for (Value const& seg : *tree) {
         Point p0 = seg.first;  Point p1 = seg.second;
         p.drawLine(scale.px(p0.get<0>()), scale.py(p0.get<1>()),
