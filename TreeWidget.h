@@ -33,10 +33,12 @@ struct Rect {
 class TreeWidget : public QWidget {
     Q_OBJECT
 public:
+
     explicit TreeWidget(QWidget *parent = nullptr);
     ~TreeWidget() override;
 
     void paintEvent(QPaintEvent*) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
     typedef  boost::geometry::model::point<double, 2, boost::geometry::cs::cartesian>  Point;
     typedef boost::geometry::model::box<Point>  Box;
@@ -45,10 +47,17 @@ public:
     typedef boost::geometry::index::rtree<Value, RTreeParams>  RTree;
 
     typedef std::mt19937_64  Random;
+
+protected:
+    void setName(std::string const& title);
+    void toggleSelection();
+
 private:
     Random random;
     const Rect range = Rect::of(0.0,0.0, 1.0,1.0);
     Rect scale = {};
+    RTree* packedTree = nullptr;
+    RTree* filledTree = nullptr;
     RTree* tree = nullptr;
 };
 #endif // TREEWIDGET_H
